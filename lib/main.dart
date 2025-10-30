@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'features/home/presentation/screens/home_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft, 
+    DeviceOrientation.landscapeRight
+  ]);
+
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+  );
+
+  // Для того чтобы убрать системные интерфейсы старых утсройств
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+    ),
+  );
+
   runApp(const ConnectFourApp());
 }
 
