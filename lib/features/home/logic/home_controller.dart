@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeController {
-  void onNewGamePressed() {
+  void onNewGamePressed(BuildContext context) {
     debugPrint('Начать новую игру');
-    //context.go('/game');
-    // TODO: перейти на экран настройки новой игры
+    context.go('/game');
   }
 
   void onContinueGamePressed() {

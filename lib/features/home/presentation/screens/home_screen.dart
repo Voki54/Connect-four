@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             MainMenuButton(
               text: 'Новая игра',
-              onPressed: controller.onNewGamePressed,
+              onPressed: () => controller.onNewGamePressed(context),
             ),
             const SizedBox(height: 16),
             MainMenuButton(

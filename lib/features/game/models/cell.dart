@@ -1,0 +1,1 @@
+enum CellState { empty, player1, player2 }

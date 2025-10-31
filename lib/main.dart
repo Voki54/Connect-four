@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
-import 'features/home/presentation/screens/home_screen.dart';
+import 'features/core/router/app_router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,19 +25,6 @@ void main() {
   runApp(const ConnectFourApp());
 }
 
-final _router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
-    ),
-    // GoRoute(
-    //   path: '/game',
-    //   builder: (context, state) => const GameScreen(),
-    // ),
-  ],
-);
-
 class ConnectFourApp extends StatelessWidget {
   const ConnectFourApp({super.key});
 
@@ -51,7 +37,7 @@ class ConnectFourApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70, ),
         useMaterial3: true,
       ),
-      routerConfig: _router,
+      routerConfig: appRouter,
     );
   }
 }
