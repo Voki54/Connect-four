@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../models/cell.dart';
+import '../cell_states.dart';
+// import '../../core/logger.dart';
 
 class CellWidget extends StatelessWidget {
   final CellState state;
@@ -21,6 +22,8 @@ class CellWidget extends StatelessWidget {
         color = Colors.yellow;
       case CellState.empty:
     }
+
+// logger.info("CellWidget");
 
     return GestureDetector(
       onTap: onTap,

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeController {
-  void onNewGamePressed(BuildContext context) {
-    debugPrint('Начать новую игру');
-    context.go('/game');
+  void onNewGamePressed(BuildContext context, int userId) {
+    context.go('/start_game', extra: userId);
   }
 
   void onContinueGamePressed() {
