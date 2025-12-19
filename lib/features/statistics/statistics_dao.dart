@@ -1,42 +1,30 @@
-import '../core/local_database.dart';
+import '../user/user_dao.dart';
 import 'statistics_model.dart';
+import '../core/logger.dart';
 
 class StatisticsDao {
-  final AppDatabase _appDatabase;
+  final UserDao _userDao;
 
-  StatisticsDao(this._appDatabase);
+  StatisticsDao(this._userDao);
 
-  Future<StatisticsLocal?> getByUser(int userId) async {
-    final db = await _appDatabase.db;
-    final result = await db.query(
-      'StatisticsLocal',
-      where: 'user_id = ?',
-      whereArgs: [userId],
-      limit: 1,
+  Future<StatisticsLocal?> getByUser() async {
+    final user = await _userDao.getUser();
+    logger.info("StatisticsDao: user?");
+    if (user == null) return null;
+    logger.info("StatisticsDao: user - ${user.localId}");
+    return StatisticsLocal(
+      totalGames: user.totalGames,
+      winsPlayer1: user.winsPlayer1,
+      winsPlayer2: user.winsPlayer2,
+      draws: user.draws,
     );
-    if (result.isEmpty) return null;
-    return StatisticsLocal.fromMap(result.first);
   }
 
-  Future<int> createEmpty(int userId) async {
-    final db = await _appDatabase.db;
-    return await db.insert('StatisticsLocal', {
-      'user_id': userId,
-      'total_Games': 0,
-      'wins_player1': 0,
-      'wins_player2': 0,
-      'draws': 0,
-      'last_sync': null,
-    });
-  }
+  // StatisticsLocal createEmpty() {
+  //   return StatisticsLocal();
+  // }
 
   Future<void> update(StatisticsLocal stats) async {
-    final db = await _appDatabase.db;
-    await db.update(
-      'StatisticsLocal',
-      stats.toMap(),
-      where: 'stat_id = ?',
-      whereArgs: [stats.statId],
-    );
+    await _userDao.updateUserStatistcs(stats);
   }
 }

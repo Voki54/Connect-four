@@ -8,12 +8,11 @@ class CurrentGameRepository {
 
   CurrentGameRepository(this.dao);
 
-  Future<CurrentGameLocal?> loadGame(int userId) async {
-    return await dao.getByUser(userId);
+  Future<CurrentGameLocal?> loadGame() async {
+    return await dao.getByUser();
   }
 
   Future<CurrentGameLocal> startNewGame({
-    required int userId,
     required int rows,
     required int columns,
     required int colorPlayer1,
@@ -22,21 +21,13 @@ class CurrentGameRepository {
   }) async {
     final boardState = Board(rows: rows, columns: columns).serialize();
 
-    final newGame = CurrentGameLocal(
-      gameId: 0,
-      userId: userId,
+    return await dao.create(
       rows: rows,
       columns: columns,
       colorPlayer1: colorPlayer1,
       colorPlayer2: colorPlayer2,
-      timeLimit: timeLimit,
       boardState: boardState,
-      currentPlayer: 1,
     );
-
-    await dao.create(newGame);
-
-    return newGame.copyWith();
   }
 
   Future<void> saveGame(CurrentGameLocal game) async {

@@ -11,7 +11,7 @@ import '../core/logger.dart';
 class GameController {
   final StatisticsController _statisticsController;
   final CurrentGameRepository _currentGameRepository;
-  final int _userId;
+  // final int _userId;
 
   CurrentGameLocal? _currentGame;
   CurrentGameLocal get currentGame => _currentGame!;
@@ -24,15 +24,14 @@ class GameController {
   GameController(
     this._statisticsController,
     this._currentGameRepository,
-    this._userId,
   );
 
   Future<void> loadCurrentGame() async {
-    _currentGame = await _currentGameRepository.loadGame(_userId);
+    _currentGame = await _currentGameRepository.loadGame();
   }
 
   Future<void> startNewGame({
-    required int userId,
+    // required int userId,
     required int rows,
     required int columns,
     required int colorPlayer1,
@@ -44,7 +43,7 @@ class GameController {
     }
 
     _currentGame = await _currentGameRepository.startNewGame(
-      userId: _userId,
+      // userId: _userId,
       rows: rows,
       columns: columns,
       colorPlayer1: colorPlayer1,
@@ -60,6 +59,10 @@ class GameController {
 
   /// Makes the player's move
   Future<bool> makeMove(int column) async {
+    if (_currentGame == null) {
+      throw Exception('_currentGame is null!');
+    }
+
     if (gameOver) return false;
     logger.info("gameController makeMove");
     // final CellState currentPlayer =
@@ -166,10 +169,11 @@ class GameController {
     _statisticsController.addGameResult(
       winner: winner == null ? null : (winner == CellState.player1 ? 1 : 2),
     );
+
+    // if (us)
   }
 
   void onExitGamePressed(BuildContext context) {
-    debugPrint('Выход из игры');
     context.go('/');
   }
 }

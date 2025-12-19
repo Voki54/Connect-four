@@ -1,28 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
 
-class HomeController {
-  void onNewGamePressed(BuildContext context, int userId) {
-    context.go('/start_game', extra: userId);
-  }
+// class HomeController {
+//   void onNewGamePressed(BuildContext context) {
+//     context.go('/start_game');
+//   }
 
-  void onContinueGamePressed() {
-    debugPrint('Продолжить игру');
-    // TODO: проверить, есть ли сохранённая игра, и возобновить
-  }
+//   void onContinueGamePressed() {
+//     debugPrint('Продолжить игру');
+//     // TODO: проверить, есть ли сохранённая игра, и возобновить
+//   }
 
-  void onSettingsPressed() {
-    debugPrint('Открыть настройки');
-    // TODO: перейти на экран настроек
-  }
+//   void onSettingsPressed() {
+//     debugPrint('Открыть настройки');
+//     // TODO: перейти на экран настроек
+//   }
 
-  void onStatisticsPressed() {
-    debugPrint('Открыть статистику');
-    // TODO: перейти на экран статистики
-  }
+//   void onStatisticsPressed(BuildContext context) {
+//     context.go('/statistics');
+//   }
 
-  void onRulesPressed() {
-    debugPrint('Показать правила');
-    // TODO: перейти на экран правил игры
-  }
-}
+//   void onDocumentationPressed() {
+//     debugPrint('Показать правила');
+//     // TODO: перейти на экран правил игры
+//   }
+// }

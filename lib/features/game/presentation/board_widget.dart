@@ -18,9 +18,6 @@ class BoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final board = Board.deserialize(controller.currentGame.boardState);
-
-    logger.info("BoardWidget");
-
     return AspectRatio(
       aspectRatio: currentBoard.columns / currentBoard.rows,
       child: Column(

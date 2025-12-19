@@ -1,8 +1,12 @@
+import 'package:connect_four/features/game/game_controller.dart';
+import 'package:connect_four/features/statistics/statistics_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'features/core/app_router.dart';
 import 'features/core/injector.dart';
 import 'features/core/logger.dart';
+import 'features/core/ui/theme.dart';
+import 'features/user/user_controller.dart';
 
 void main() async {
   // getIt.allowReassignment = true;
@@ -14,9 +18,9 @@ void main() async {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
-logger.info("3");
+  logger.info("3");
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-logger.info("4");
+  logger.info("4");
   // Для того чтобы убрать системные интерфейсы старых утсройств
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -24,17 +28,21 @@ logger.info("4");
       statusBarColor: Colors.transparent,
     ),
   );
-logger.info("5");
+  logger.info("5");
   await configureDependencies();
   logger.info("6");
 
-  // print('Registered dependencies:');
-  // getIt.forEach((key, value) {
-  //   print(' - $key: ${value.instance}');
-  // });
-
   await getIt.allReady();
   logger.info("Зависимости установлены");
+
+  final userController = getIt<UserController>();
+  await userController.loadUser(); // создаёт guest
+
+  final statisticsController = getIt<StatisticsController>();
+  await statisticsController.loadStatistics(); // теперь безопасно
+
+  final gameController = getIt<GameController>();
+  await gameController.loadCurrentGame();
 
   runApp(const ConnectFourApp());
 }
@@ -48,10 +56,7 @@ class ConnectFourApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Четыре в ряд',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70),
-        useMaterial3: true,
-      ),
+      theme: lightTheme,
       routerConfig: appRouter,
     );
   }

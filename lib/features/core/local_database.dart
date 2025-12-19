@@ -16,8 +16,7 @@ class AppDatabase {
 
   Future<Database> _init() async {
     final path = join(await getDatabasesPath(), 'connect_four.db');
-    logger.info("DB init now");
-    logger.info("DB path - $path");
+    logger.info("DB init, path - $path");
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
@@ -26,34 +25,39 @@ class AppDatabase {
       CREATE TABLE UserLocal (
         local_id INTEGER PRIMARY KEY AUTOINCREMENT,
         auth_id TEXT,
-        is_guest INTEGER,
-        token TEXT
+        is_guest INTEGER NOT NULL,
+        is_current INTEGER NOT NULL,
+        token TEXT,
+        total_games INTEGER NOT NULL,
+        wins_player1 INTEGER NOT NULL,
+        wins_player2 INTEGER NOT NULL,
+        draws INTEGER NOT NULL
       );
     ''');
 
     await db.execute('''
-      CREATE TABLE StatisticsLocal (
+      CREATE TABLE PendingStatistics (
         stat_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         total_games INTEGER NOT NULL,
         wins_player1 INTEGER NOT NULL,
         wins_player2 INTEGER NOT NULL,
         draws INTEGER NOT NULL,
-        last_sync INTEGER,
+        sync_id INTEGER,
         FOREIGN KEY(user_id) REFERENCES UserLocal(local_id)
       );
     ''');
 
-    await db.execute('''
-      CREATE TABLE Settings (
-        setting_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        language TEXT,
-        volume INTEGER,
-        theme TEXT,
-        FOREIGN KEY(user_id) REFERENCES UserLocal(local_id)
-      );
-    ''');
+    // await db.execute('''
+    //   CREATE TABLE Settings (
+    //     setting_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //     user_id INTEGER,
+    //     language TEXT,
+    //     volume INTEGER,
+    //     theme TEXT,
+    //     FOREIGN KEY(user_id) REFERENCES UserLocal(local_id)
+    //   );
+    // ''');
 
     await db.execute('''
       CREATE TABLE CurrentGame (

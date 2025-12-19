@@ -5,9 +5,9 @@ import '../game_controller.dart';
 import '../../core/game_constants.dart';
 
 class StartGameScreen extends StatelessWidget {
-  final int userId;
+  // final int userId;
 
-  const StartGameScreen({super.key, required this.userId});
+  const StartGameScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class StartGameScreen extends StatelessWidget {
   Future<void> _startGame(BuildContext context) async {
     try {
       // Получаем контроллер
-      final controller = GetIt.I<GameController>(param1: userId);
+      final controller = GetIt.I<GameController>();
       
       // Показываем индикатор загрузки
       showDialog(
@@ -64,7 +64,7 @@ class StartGameScreen extends StatelessWidget {
 
       // Захардкоженные параметры игры
       await controller.startNewGame(
-        userId: userId,
+        // userId: userId,
         rows: GameConstants.defaultRows,           // 6
         columns: GameConstants.defaultColumns,     // 7  
         colorPlayer1: 1,                       // 🔴
@@ -75,7 +75,7 @@ class StartGameScreen extends StatelessWidget {
       // Закрываем индикатор загрузки
       if (context.mounted) {
         Navigator.of(context).pop();
-        context.go('/game', extra: userId);
+        context.go('/game');
       }
 
     } catch (e) {
