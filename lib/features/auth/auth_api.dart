@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:connect_four/features/auth/token_storage.dart';
 import 'package:http/http.dart' as http;
 import 'auth_models.dart';
+import '../core/logger.dart';
 
 class AuthApi {
   final String _baseUrl;
@@ -67,19 +68,8 @@ class AuthApi {
     // }
   }
 
-  Future<int> logout() async {
-    final response = await http.post(
-      Uri.parse('$_baseUrl/auth/logout'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${await _tokenStorage.getAccessToken()}',
-      },
-    );
-
-    return response.statusCode;
-  }
-
-  // Future<void> logout() async {
+  // Future<int> logout() async {
+  //   logger.info("Token - ${await _tokenStorage.getAccessToken()}");
   //   final response = await http.post(
   //     Uri.parse('$_baseUrl/auth/logout'),
   //     headers: {
@@ -88,10 +78,23 @@ class AuthApi {
   //     },
   //   );
 
-  //   if (response.statusCode != 204) {
-  //     throw Exception('Logout failed: ${response.body}');
-  //   }
+  //   return response.statusCode;
   // }
+
+  Future<void> logout() async {
+    logger.info("Token - ${await _tokenStorage.getAccessToken()}");
+    final response = await http.post(
+      Uri.parse('$_baseUrl/auth/logout'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${await _tokenStorage.getAccessToken()}',
+      },
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Logout failed: ${response.body}');
+    }
+  }
 }
 
 class RefreshTokenExpiredException implements Exception {}

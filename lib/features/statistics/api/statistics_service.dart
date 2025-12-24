@@ -27,10 +27,9 @@ class StatisticsService {
     }
   }
 
-  Future<StatisticsResponse> updateStatistics(
+  Future<void> updateStatistics( //StatisticsResponse
     UpdateStatisticsRequest request,
   ) async {
-    print("TOKEN ${_tokenStorage.getAccessToken()}");
     final response = await http.put(
       Uri.parse('$_baseUrl/api/statistics'),
       headers: {
@@ -40,10 +39,10 @@ class StatisticsService {
       body: json.encode(request.toMap()),
     );
 
-    if (response.statusCode == 200) {
-      final map = json.decode(response.body) as Map<String, dynamic>;
-      return StatisticsResponse.fromMap(map);
-    } else {
+    if (response.statusCode != 204) {
+      // final map = json.decode(response.body) as Map<String, dynamic>;
+      // return StatisticsResponse.fromMap(response.);
+    // } else {
       throw Exception('Failed to update statistics: ${response.statusCode}');
     }
   }

@@ -1,3 +1,4 @@
+import 'package:connect_four/features/core/ui/theme.dart';
 import 'package:connect_four/features/statistics/statistics_model.dart';
 import 'package:flutter/material.dart';
 import '../core/logger.dart';
@@ -22,61 +23,57 @@ class StatsDetailedWidget extends StatelessWidget {
         ? (stats.draws / stats.totalGames * 100)
         : 0;
 
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Статистика игр',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            _buildStatRow('Всего игр', stats.totalGames.toString()),
-            const Divider(),
-            _buildStatRowWithPercentage(
-              'Победы Игрока 1',
-              stats.winsPlayer1.toString(),
-              winRatePlayer1,
-              Colors.green,
-            ),
-            const Divider(),
-            _buildStatRowWithPercentage(
-              'Победы Игрока 2',
-              stats.winsPlayer2.toString(),
-              winRatePlayer2,
-              Colors.blue,
-            ),
-            const Divider(),
-            _buildStatRowWithPercentage(
-              'Ничьи',
-              stats.draws.toString(),
-              drawRate,
-              Colors.orange,
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // _buildStatRow('Всего игр', stats.totalGames.toString()),
+
+        _buildStatRowWithPercentage(
+          'Всего игр',
+          stats.totalGames.toString(),
+          100.toDouble(),
+          lightTheme.dividerColor,
         ),
-      ),
+        // const Divider(),
+        _buildStatRowWithPercentage(
+          'Победы Игрока 1',
+          stats.winsPlayer1.toString(),
+          winRatePlayer1,
+          lightTheme.dividerColor,
+        ),
+        // const Divider(),
+        _buildStatRowWithPercentage(
+          'Победы Игрока 2',
+          stats.winsPlayer2.toString(),
+          winRatePlayer2,
+          lightTheme.dividerColor,
+        ),
+        // const Divider(),
+        _buildStatRowWithPercentage(
+          'Ничьи',
+          stats.draws.toString(),
+          drawRate,
+          lightTheme.dividerColor,
+        ),
+      ],
     );
   }
 
-  Widget _buildStatRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildStatRow(String label, String value) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 12),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(label),
+  //         Text(
+  //           value,
+  //           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildStatRowWithPercentage(
     String label,
@@ -85,7 +82,7 @@ class StatsDetailedWidget extends StatelessWidget {
     Color color,
   ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -106,7 +103,7 @@ class StatsDetailedWidget extends StatelessWidget {
           const SizedBox(height: 4),
           LinearProgressIndicator(
             value: percentage / 100,
-            backgroundColor: Colors.grey[200],
+            backgroundColor: Color.fromARGB(70, 77, 84, 81),
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ],

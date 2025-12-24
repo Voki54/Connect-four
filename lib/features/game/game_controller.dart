@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:connect_four/features/game/win_cell.dart';
 import 'board_model.dart';
 import 'cell_states.dart';
 import '../core/game_constants.dart';
@@ -11,7 +10,6 @@ import '../core/logger.dart';
 class GameController {
   final StatisticsController _statisticsController;
   final CurrentGameRepository _currentGameRepository;
-  // final int _userId;
 
   CurrentGameLocal? _currentGame;
   CurrentGameLocal get currentGame => _currentGame!;
@@ -20,18 +18,17 @@ class GameController {
   late Board currentBoard;
   bool gameOver = false;
   CellState? winner;
+  CellState startingPlayer = CellState.player1;
 
-  GameController(
-    this._statisticsController,
-    this._currentGameRepository,
-  );
+  List<WinCell> winningCells = [];
+
+  GameController(this._statisticsController, this._currentGameRepository);
 
   Future<void> loadCurrentGame() async {
     _currentGame = await _currentGameRepository.loadGame();
   }
 
   Future<void> startNewGame({
-    // required int userId,
     required int rows,
     required int columns,
     required int colorPlayer1,
@@ -39,8 +36,10 @@ class GameController {
     int? timeLimit,
   }) async {
     if (_currentGame != null) {
-      _currentGameRepository.deleteGame(_currentGame!.gameId);
+      _currentGameRepository.deleteGame(_currentGame!.gameId!);
     }
+
+    winningCells = [];
 
     _currentGame = await _currentGameRepository.startNewGame(
       // userId: _userId,
@@ -51,10 +50,31 @@ class GameController {
       timeLimit: timeLimit,
     );
 
-    currentPlayer = CellState.values[_currentGame!.currentPlayer];
+    currentPlayer = startingPlayer;
     currentBoard = Board.deserialize(_currentGame!.boardState);
     gameOver = false;
     winner = null;
+  }
+
+  Future<void> startNewGameWithSwitchedStarter({
+    required int rows,
+    required int columns,
+    required int colorPlayer1,
+    required int colorPlayer2,
+    int? timeLimit,
+  }) async {
+    // Переключаем стартового игрока
+    startingPlayer = startingPlayer == CellState.player1
+        ? CellState.player2
+        : CellState.player1;
+
+    await startNewGame(
+      rows: rows,
+      columns: columns,
+      colorPlayer1: colorPlayer1,
+      colorPlayer2: colorPlayer2,
+      timeLimit: timeLimit,
+    );
   }
 
   /// Makes the player's move
@@ -122,37 +142,72 @@ class GameController {
     ];
 
     for (var dir in checkedDirections) {
-      int count = 1;
-      count += _countInDirection(row, column, dir[0], dir[1], board);
-      count += _countInDirection(row, column, -dir[0], -dir[1], board);
-      if (count >= GameConstants.connectToWin) return true;
+      final line = <WinCell>[];
+      line.add(WinCell(row, column));
+
+      _collectInDirection(row, column, dir[0], dir[1], board, line);
+
+      // в обратную сторону
+      _collectInDirection(row, column, -dir[0], -dir[1], board, line);
+
+      if (line.length >= GameConstants.connectToWin) {
+        winningCells = line;
+        return true;
+      }
+
+      // int count = 1;
+      // count += _countInDirection(row, column, dir[0], dir[1], board);
+      // count += _countInDirection(row, column, -dir[0], -dir[1], board);
+      // if (count >= GameConstants.connectToWin) return true;
     }
     return false;
   }
 
-  int _countInDirection(
-    int currentRow,
-    int currentCol,
+  void _collectInDirection(
+    int startRow,
+    int startCol,
     int dRow,
     int dCol,
     Board board,
+    List<WinCell> result,
   ) {
-    int count = 0;
-    // CellState player = board.grid[currentRow][currentCol];
-    int r = currentRow + dRow;
-    int c = currentCol + dCol;
+    int r = startRow + dRow;
+    int c = startCol + dCol;
 
     while (r >= 0 &&
         r < board.rows &&
         c >= 0 &&
         c < board.columns &&
         board.grid[r][c] == currentPlayer) {
-      count++;
+      result.add(WinCell(r, c));
       r += dRow;
       c += dCol;
     }
-    return count;
   }
+
+  // int _countInDirection(
+  //   int currentRow,
+  //   int currentCol,
+  //   int dRow,
+  //   int dCol,
+  //   Board board,
+  // ) {
+  //   int count = 0;
+  //   // CellState player = board.grid[currentRow][currentCol];
+  //   int r = currentRow + dRow;
+  //   int c = currentCol + dCol;
+
+  //   while (r >= 0 &&
+  //       r < board.rows &&
+  //       c >= 0 &&
+  //       c < board.columns &&
+  //       board.grid[r][c] == currentPlayer) {
+  //     count++;
+  //     r += dRow;
+  //     c += dCol;
+  //   }
+  //   return count;
+  // }
 
   // TODO: при перезапуске игры первым должен холдиться другой игрок, создать функцию генерации поля в классе board?
   // void reset() {
@@ -165,15 +220,9 @@ class GameController {
   //   winner = null;
   // }
 
-  void saveStatistics() {
-    _statisticsController.addGameResult(
+  Future<void> saveStatistics() async {
+    await _statisticsController.addGameResult(
       winner: winner == null ? null : (winner == CellState.player1 ? 1 : 2),
     );
-
-    // if (us)
-  }
-
-  void onExitGamePressed(BuildContext context) {
-    context.go('/');
   }
 }

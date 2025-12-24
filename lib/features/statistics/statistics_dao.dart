@@ -20,10 +20,6 @@ class StatisticsDao {
     );
   }
 
-  // StatisticsLocal createEmpty() {
-  //   return StatisticsLocal();
-  // }
-
   Future<void> update(StatisticsLocal stats) async {
     await _userDao.updateUserStatistcs(stats);
   }

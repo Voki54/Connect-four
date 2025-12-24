@@ -41,8 +41,8 @@ Future<CurrentGameLocal> create({
   final db = await _appDatabase.db;
 
   final newGame = CurrentGameLocal(
-    gameId: 0,
-    userId: user.localId,
+    gameId: null,
+    userId: user.localId!,
     rows: rows,
     columns: columns,
     colorPlayer1: colorPlayer1,

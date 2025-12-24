@@ -47,6 +47,10 @@ void main() async {
   runApp(const ConnectFourApp());
 }
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
+
 class ConnectFourApp extends StatelessWidget {
   const ConnectFourApp({super.key});
 
@@ -58,6 +62,7 @@ class ConnectFourApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       routerConfig: appRouter,
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
     );
   }
 }

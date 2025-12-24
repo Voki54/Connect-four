@@ -2,7 +2,6 @@ import 'package:connect_four/features/statistics/statistics_model.dart';
 
 import '../core/local_database.dart';
 import 'user_model.dart';
-import '../core/logger.dart';
 
 class UserDao {
   final AppDatabase _appDatabase;
@@ -27,6 +26,20 @@ class UserDao {
     return UserLocal.fromMap(result.first);
   }
 
+  Future<void> changeUser(String newUserAuthId) async {
+    final currentUser = await getUser();
+    final newUser = await getUserByAuthId(newUserAuthId);
+
+    if (newUser == null || currentUser == null) {
+      throw Exception(
+        "When changing the user, no new or current user was found",
+      );
+    }
+
+    await updateUser(currentUser.copyWith(isCurrent: false));
+    await updateUser(newUser.copyWith(isCurrent: true));
+  }
+
   Future<UserLocal?> getUserByAuthId(String authId) async {
     final db = await _appDatabase.db;
     final result = await db.query(
@@ -43,7 +56,7 @@ class UserDao {
   Future<int> updateUser(UserLocal user) async {
     final db = await _appDatabase.db;
 
-logger.info("UserDao: Updated");
+    // logger.info("UserDao: Updated");
 
     return db.update(
       'UserLocal',
@@ -51,7 +64,6 @@ logger.info("UserDao: Updated");
       where: 'local_id = ?',
       whereArgs: [user.localId],
     );
-    
   }
 
   Future<int> updateUserStatistcs(StatisticsLocal stats) async {
@@ -69,13 +81,21 @@ logger.info("UserDao: Updated");
     // logger.info(
     //   "updated stats - ${stats.totalGames}, ${stats.winsPlayer1}, ${stats.winsPlayer2}, ${stats.draws}",
     // );
+
+    return await updateUser(updatedUser);
+    // final db = await _appDatabase.db;
+
+    // return db.update(
+    //   'UserLocal',
+    //   updatedUser.toMap(),
+    //   where: 'local_id = ?',
+    //   whereArgs: [updatedUser.localId],
+    // );
+  }
+
+  Future<int> deleteUser(int localId) async {
     final db = await _appDatabase.db;
 
-    return db.update(
-      'UserLocal',
-      updatedUser.toMap(),
-      where: 'local_id = ?',
-      whereArgs: [updatedUser.localId],
-    );
+    return db.delete('UserLocal', where: 'local_id = ?', whereArgs: [localId]);
   }
 }

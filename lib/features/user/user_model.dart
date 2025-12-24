@@ -1,5 +1,5 @@
 class UserLocal {
-  final int localId;
+  final int? localId;
   final String? authId;
   final bool isGuest;
   final bool isCurrent;

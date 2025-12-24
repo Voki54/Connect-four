@@ -17,6 +17,12 @@ final lightTheme = ThemeData(
       fontSize: 26,
       letterSpacing: 0.25,
     ),
+
+    bodyLarge: TextStyle(
+      color: AppColors.lightTextPrimary,
+      fontSize: 22,
+      letterSpacing: 0.25,
+    ),
     // bodyText1: TextStyle(color: AppColors.lightTextPrimary),
   ),
 );

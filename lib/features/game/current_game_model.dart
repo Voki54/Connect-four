@@ -1,8 +1,8 @@
 class CurrentGameLocal {
-  final int gameId;
+  final int? gameId;
   final int userId;
-  final int rows;        
-  final int columns;     
+  final int rows;
+  final int columns;
   final int colorPlayer1;
   final int colorPlayer2;
   final int? timeLimit; // секунд
@@ -22,16 +22,16 @@ class CurrentGameLocal {
   });
 
   Map<String, dynamic> toMap() => {
-        'game_id': gameId,
-        'user_id': userId,
-        'rows': rows,
-        'columns': columns,
-        'color_player1': colorPlayer1,
-        'color_player2': colorPlayer2,
-        'time_limit': timeLimit,
-        'board_state': boardState,
-        'current_player': currentPlayer,
-      };
+    'game_id': gameId,
+    'user_id': userId,
+    'rows': rows,
+    'columns': columns,
+    'color_player1': colorPlayer1,
+    'color_player2': colorPlayer2,
+    'time_limit': timeLimit,
+    'board_state': boardState,
+    'current_player': currentPlayer,
+  };
 
   factory CurrentGameLocal.fromMap(Map<String, dynamic> map) {
     return CurrentGameLocal(
@@ -67,5 +67,5 @@ class CurrentGameLocal {
       boardState: boardState ?? this.boardState,
       currentPlayer: currentPlayer ?? this.currentPlayer,
     );
-  }  
+  }
 }

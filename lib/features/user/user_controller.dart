@@ -1,6 +1,3 @@
-import 'package:connect_four/features/statistics/pending_statistics/pending_statistics_dao.dart';
-import 'package:connect_four/features/statistics/pending_statistics/pending_statistics_model.dart';
-import 'package:connect_four/features/statistics/statistics_controller.dart';
 import 'package:connect_four/features/statistics/statistics_model.dart';
 
 import 'user_model.dart';
@@ -14,7 +11,12 @@ class UserController {
   final UserDao _dao;
   // final StatisticsController _statisticsController;
   UserLocal? _currentUser;
-  UserLocal get user => _currentUser!;
+  // UserLocal get user => _currentUser!;
+
+  Future<UserLocal> get user async {
+    await loadUser();
+    return _currentUser!;
+  }
 
   UserController(this._dao); //, this._statisticsController
 
@@ -27,7 +29,7 @@ class UserController {
     final userStats = StatisticsLocal();
     logger.info("UserController: start guest create");
     final guest = UserLocal(
-      localId: 0,
+      localId: null,
       authId: null,
       isGuest: true,
       isCurrent: true,
@@ -48,18 +50,29 @@ class UserController {
   }
 
   Future<void> setAuthUserId(String username) async {
-    await _dao.updateUser(user.copyWith(isGuest: false, authId: username));
+    // пользователь не может быть не гостем, потому что чтобы пройти регистрацию нцжно выйти из акк
+    await _dao.updateUser(
+      _currentUser!.copyWith(isGuest: false, isCurrent: true, authId: username),
+    );
+  }
+
+  Future<void> changeUser(String newUserAuthId) async {
+    await _dao.changeUser(newUserAuthId);
   }
 
   Future<void> logout() async {
-    await _dao.updateUser(user.copyWith(isCurrent: false));
+    await _dao.updateUser(_currentUser!.copyWith(isCurrent: false));
     final tokenStorage = GetIt.I<TokenStorage>();
     await tokenStorage.clear();
-    createGuest();
+    await createGuest();
     // if (localUser == null && user.isGuest) {
     //   await _dao.updateUser(user.copyWith(isGuest: false, authId: username));
     // }
     // await _repository.clearUser();
     // _currentUser = null;
+  }
+
+  Future<void> deleteUser(int localId) async {
+    await _dao.deleteUser(localId);
   }
 }

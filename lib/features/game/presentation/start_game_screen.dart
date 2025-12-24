@@ -50,10 +50,8 @@ class StartGameScreen extends StatelessWidget {
 
   Future<void> _startGame(BuildContext context) async {
     try {
-      // Получаем контроллер
       final controller = GetIt.I<GameController>();
       
-      // Показываем индикатор загрузки
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -62,28 +60,22 @@ class StartGameScreen extends StatelessWidget {
         ),
       );
 
-      // Захардкоженные параметры игры
       await controller.startNewGame(
         // userId: userId,
-        rows: GameConstants.defaultRows,           // 6
-        columns: GameConstants.defaultColumns,     // 7  
-        colorPlayer1: 1,                       // 🔴
-        colorPlayer2: 2,                    // 🟡
-        timeLimit: null,                           // Без ограничения времени
+        rows: GameConstants.defaultRows,
+        columns: GameConstants.defaultColumns,
+        colorPlayer1: 1,
+        colorPlayer2: 2,
+        timeLimit: null,
       );
 
       // Закрываем индикатор загрузки
       if (context.mounted) {
-        Navigator.of(context).pop();
         context.go('/game');
       }
 
     } catch (e) {
-      // Закрываем индикатор загрузки в случае ошибки
       if (context.mounted) {
-        Navigator.of(context).pop();
-        
-        // Показываем ошибку
         showDialog(
           context: context,
           builder: (context) => AlertDialog(

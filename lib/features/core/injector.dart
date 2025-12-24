@@ -60,12 +60,12 @@ Future<void> configureDependencies() async {
   });
   logger.info("Зависимость StatisticsDao +");
 
-  getIt.registerSingletonAsync<PendingStatisticsDao>(() async {
-    await getIt.isReady<AppDatabase>();
-    await getIt.isReady<UserDao>();
-    return PendingStatisticsDao(getIt<AppDatabase>(), getIt<UserDao>());
-  });
-  logger.info("Зависимость PendingStatisticsDao +");
+  // getIt.registerSingletonAsync<PendingStatisticsDao>(() async {
+  //   await getIt.isReady<AppDatabase>();
+  //   await getIt.isReady<UserDao>();
+  //   return PendingStatisticsDao(getIt<AppDatabase>(), getIt<UserDao>());
+  // });
+  // logger.info("Зависимость PendingStatisticsDao +");
 
   // getIt.registerLazySingleton<SettingsDao>(() => SettingsDao());
   getIt.registerSingletonAsync<CurrentGameDao>(() async {
@@ -102,7 +102,7 @@ Future<void> configureDependencies() async {
   getIt.registerSingletonAsync<StatisticsController>(() async {
     // await getIt.isReady<UserController>();
     await getIt.isReady<StatisticsDao>();
-    await getIt.isReady<PendingStatisticsDao>();
+    // await getIt.isReady<PendingStatisticsDao>();
     // final userId = getIt<UserController>().user.localId;
 
     // final controller = StatisticsController(
@@ -113,23 +113,23 @@ Future<void> configureDependencies() async {
     // return controller;
     return StatisticsController(
       getIt<StatisticsDao>(),
-      getIt<PendingStatisticsDao>(),
+      // getIt<PendingStatisticsDao>(),
     );
   });
   logger.info("Зависимость StatisticsController +");
 
-  getIt.registerSingletonAsync<SyncController>(() async {
-    await getIt.isReady<UserController>();
-    await getIt.isReady<StatisticsController>();
+  // getIt.registerSingletonAsync<SyncController>(() async {
+  //   await getIt.isReady<UserController>();
+  //   await getIt.isReady<StatisticsController>();
 
-    return SyncController(
-      getIt<UserController>(),
-      getIt<StatisticsController>(),
-      getIt<AuthApi>(),
-      getIt<TokenStorage>(),
-    );
-  });
-  logger.info("Зависимость SyncController +");
+  //   return SyncController(
+  //     getIt<UserController>(),
+  //     getIt<StatisticsController>(),
+  //     getIt<AuthApi>(),
+  //     getIt<TokenStorage>(),
+  //   );
+  // });
+  // logger.info("Зависимость SyncController +");
 
   // SettingsController
   // getIt.registerSingletonAsync<SettingsController>(() async {
