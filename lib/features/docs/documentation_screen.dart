@@ -62,8 +62,6 @@ class DocumentationScreenState extends State<DocumentationScreen> {
           '''
 # Ошибка загрузки документации
 
-$message
-
 Проверьте подключение к интернету или попробуйте позже.
 ''';
       _isLoading = false;

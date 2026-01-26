@@ -42,7 +42,6 @@ class GameController {
     winningCells = [];
 
     _currentGame = await _currentGameRepository.startNewGame(
-      // userId: _userId,
       rows: rows,
       columns: columns,
       colorPlayer1: colorPlayer1,
@@ -85,15 +84,10 @@ class GameController {
 
     if (gameOver) return false;
     logger.info("gameController makeMove");
-    // final CellState currentPlayer =
-    //     CellState.values[_currentGame!.currentPlayer];
-
-    // final board = Board.deserialize(_currentGame!.boardState);
     logger.info("gameController DBboardState ${_currentGame!.boardState}");
     logger.info("gameController LOCALboardState ${currentBoard.serialize()}");
     final row = currentBoard.dropToken(column, currentPlayer);
     logger.info("gameController row $row column $column");
-    // int row = board.dropToken(column, currentPlayer);
     if (row == -1) return false;
 
     if (_checkWin(row, column, currentBoard)) {
@@ -154,11 +148,6 @@ class GameController {
         winningCells = line;
         return true;
       }
-
-      // int count = 1;
-      // count += _countInDirection(row, column, dir[0], dir[1], board);
-      // count += _countInDirection(row, column, -dir[0], -dir[1], board);
-      // if (count >= GameConstants.connectToWin) return true;
     }
     return false;
   }
@@ -184,41 +173,6 @@ class GameController {
       c += dCol;
     }
   }
-
-  // int _countInDirection(
-  //   int currentRow,
-  //   int currentCol,
-  //   int dRow,
-  //   int dCol,
-  //   Board board,
-  // ) {
-  //   int count = 0;
-  //   // CellState player = board.grid[currentRow][currentCol];
-  //   int r = currentRow + dRow;
-  //   int c = currentCol + dCol;
-
-  //   while (r >= 0 &&
-  //       r < board.rows &&
-  //       c >= 0 &&
-  //       c < board.columns &&
-  //       board.grid[r][c] == currentPlayer) {
-  //     count++;
-  //     r += dRow;
-  //     c += dCol;
-  //   }
-  //   return count;
-  // }
-
-  // TODO: при перезапуске игры первым должен холдиться другой игрок, создать функцию генерации поля в классе board?
-  // void reset() {
-  //   board.grid = List.generate(
-  //     board.rows,
-  //     (_) => List.generate(board.columns, (_) => CellState.empty),
-  //   );
-  //   currentPlayer = CellState.player1;
-  //   gameOver = false;
-  //   winner = null;
-  // }
 
   Future<void> saveStatistics() async {
     await _statisticsController.addGameResult(

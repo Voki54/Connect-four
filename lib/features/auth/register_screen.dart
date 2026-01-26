@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() => _error = e.toString());
       logger.info("Registration is unsuccessful. Error: $_error");
       ResultSnackBar.showFailSnackBar(
-        message: 'Регистрация не выполнена. Ошибка: $_error',
+        message: 'Регистрация не выполнена. Проверьте подключение к интернету или попробуйте позже.',
       );
     } finally {
       setState(() => _loading = false);

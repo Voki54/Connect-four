@@ -65,90 +65,104 @@ class _CellWidgetState extends State<CellWidget> {
         height: 50,
         margin: const EdgeInsets.fromLTRB(7, 3, 7, 3),
         decoration: BoxDecoration(
-          border: Border.all(color: lightTheme.dividerColor, width: 3),
+          // border: Border.all(color: lightTheme.dividerColor, width: 3),
+          color: lightTheme.dividerColor,
           shape: BoxShape.circle,
         ),
-        child: ClipOval(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInBack,
-                opacity: _hasChip ? 0 : 1,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: lightTheme.dividerColor,
-                    shape: BoxShape.circle,
-                  ),
-                  // ),
-                ),
-              ),
-
-              Positioned(
-                left: 2,
-                top: 2,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: lightTheme.scaffoldBackgroundColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-
-              AnimatedScale(
-                scale: _hasChip ? 1 : 0,
-                duration: const Duration(milliseconds: 1000),
-                curve: Curves.easeOutBack,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: _chipColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 800),
-                opacity: _hasChip ? 1 : 0,
-                child: AnimatedScale(
-                  scale: _hasChip ? 1 : 0,
-                  duration: const Duration(milliseconds: 800),
-                  curve: Curves.easeOutBack,
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(115, 77, 84, 81),
-                      shape: BoxShape.circle,
+        child: Center(
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              // border: Border.all(color: lightTheme.dividerColor, width: 3),
+              // color: lightTheme.scaffoldBackgroundColor,
+              shape: BoxShape.circle,
+            ),
+            child: ClipOval(
+              clipBehavior: Clip.hardEdge,
+              child: Stack(
+                clipBehavior: Clip.hardEdge,
+                alignment: Alignment.center,
+                children: [
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInBack,
+                    opacity: _hasChip ? 0 : 1,
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: lightTheme.dividerColor,
+                        shape: BoxShape.circle,
+                      ),
+                      // ),
                     ),
                   ),
-                ),
-              ),
 
-              AnimatedScale(
-                scale: _hasChip ? 1 : 0,
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.easeOutBack,
-                child: Transform.translate(
-                  offset: _hasChip ? const Offset(4, 4) : Offset.zero,
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: _chipColor,
-                      shape: BoxShape.circle,
+                  Positioned(
+                    left: 2,
+                    top: 2,
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: lightTheme.scaffoldBackgroundColor,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
+
+                  AnimatedScale(
+                    scale: _hasChip ? 1 : 0,
+                    duration: const Duration(milliseconds: 1000),
+                    curve: Curves.easeOutBack,
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: _chipColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 800),
+                    opacity: _hasChip ? 1 : 0,
+                    child: AnimatedScale(
+                      scale: _hasChip ? 1 : 0,
+                      duration: const Duration(milliseconds: 800),
+                      curve: Curves.easeOutBack,
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(115, 77, 84, 81),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  AnimatedScale(
+                    scale: _hasChip ? 1 : 0,
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeOutBack,
+                    child: Transform.translate(
+                      offset: _hasChip ? const Offset(4, 4) : Offset.zero,
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: _chipColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

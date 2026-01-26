@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _error = e.toString());
       logger.info("Login is unsuccessful. Error: $_error");
       ResultSnackBar.showFailSnackBar(
-        message: 'Вход не выполнен. Ошибка: $_error',
+        message: 'Вход не выполнен. Проверьте подключение к интернету или попробуйте позже.',
       );
     } finally {
       setState(() => _loading = false);

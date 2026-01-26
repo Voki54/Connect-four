@@ -1,4 +1,3 @@
-import 'package:connect_four/features/auth/sync_controller.dart';
 import 'package:connect_four/features/core/game_constants.dart';
 import 'package:get_it/get_it.dart';
 
@@ -12,7 +11,6 @@ import '../user/user_controller.dart';
 
 import '../statistics/statistics_dao.dart';
 import '../statistics/statistics_controller.dart';
-import '../statistics/pending_statistics/pending_statistics_dao.dart';
 
 // import '../../settings/data/settings_dao.dart';
 // import '../../settings/logic/settings_controller.dart';
